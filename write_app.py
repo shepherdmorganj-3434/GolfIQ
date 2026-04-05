@@ -1,3 +1,6 @@
+import os
+
+app_code = r"""
 import { useState, useEffect } from 'react'
 
 const COURSES=['Augusta National','Pebble Beach Golf Links','Torrey Pines South','Pinehurst No. 2','TPC Sawgrass','Bethpage Black','Whistling Straits','Shinnecock Hills','Oakmont Country Club','Bandon Dunes','Pacific Dunes','Kiawah Island Ocean','Erin Hills','Chambers Bay','Riviera Country Club','Spyglass Hill','Medinah Country Club','Oakland Hills South','Merion Golf Club East','Winged Foot West']
@@ -528,3 +531,10 @@ export default function App() {
     </div>
   )
 }
+""".strip()
+
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'src', 'App.jsx')
+with open(output_path, 'w') as f:
+    f.write(app_code)
+
+print(f"Successfully wrote {len(app_code.splitlines())} lines to {output_path}")
