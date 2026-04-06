@@ -2943,11 +2943,28 @@ let dbReady=false; // true once tables confirmed reachable
 
 async function dbFetch(path,opts={}){
   try{
-    const r=await fetch(SUPA_URL+path,{headers:{...SUPA_HDR,...(opts.headers||{})},method:opts.method||'GET',body:opts.body});
-    if(!r.ok)return null;
+    const method=opts.method||'GET';
+    const isWrite=method!=='GET'&&method!=='DELETE';
+    const headers={
+      'apikey':SUPA_KEY,
+      'Authorization':'Bearer '+SUPA_KEY,
+      ...(isWrite?{'Content-Type':'application/json'}:{}),
+      ...(opts.headers||{})
+    };
+    const r=await fetch(SUPA_URL+path,{method,headers,body:opts.body});
+    if(!r.ok){
+      const txt=await r.text().catch(()=>'');
+      console.error('Supabase error',r.status,txt);
+      setSyncBar('err','● No sync ('+r.status+')');
+      return null;
+    }
     if(r.status===204)return true;
     return await r.json();
-  }catch(e){return null;}
+  }catch(e){
+    console.error('Supabase fetch failed',e);
+    setSyncBar('err','● No sync (net)');
+    return null;
+  }
 }
 
 // ── Check tables exist ──────────────────────────────────────────────────────
