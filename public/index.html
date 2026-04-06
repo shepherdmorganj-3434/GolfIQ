@@ -2979,7 +2979,7 @@ async function dbInit(){
   if(!currentUser)return;
   setSyncBar('sync','Connecting…');
   if(!await dbCheckReady()){
-    setSyncBar('err','● No sync');
+    // dbFetch already set the specific error — don't override it
     return;
   }
   setSyncBar('sync','Syncing…');
