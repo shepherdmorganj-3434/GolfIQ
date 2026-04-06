@@ -376,9 +376,9 @@ input,button{font-family:'Barlow',sans-serif;}
     </div>
   </div>
   <div class="hero">
-    <div id="db-sync-bar" style="display:flex;align-items:center;gap:5px;margin-bottom:10px;padding:4px 10px;background:#0a1820;border-radius:8px;width:fit-content;">
-      <div class="sync-dot" style="width:6px;height:6px;border-radius:50%;background:#f5a623;"></div>
-      <span class="sync-lbl" style="font-size:10px;color:#4a6a5a;">Connecting…</span>
+    <div id="db-sync-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:12px;padding:6px 12px;background:#111f2c;border:1px solid #1a2e3d;border-radius:10px;width:fit-content;">
+      <div class="sync-dot" style="width:7px;height:7px;border-radius:50%;background:#f5a623;flex-shrink:0;"></div>
+      <span class="sync-lbl" style="font-size:11px;font-weight:600;color:#8ab4c4;">Connecting…</span>
     </div>
     <div class="hero-label">Ready to play?</div>
     <div class="hero-title">Start a New Round</div>
@@ -2962,7 +2962,7 @@ async function dbInit(){
   if(!currentUser)return;
   setSyncBar('sync','Connecting…');
   if(!await dbCheckReady()){
-    setSyncBar('off','');
+    setSyncBar('err','● No sync');
     return;
   }
   setSyncBar('sync','Syncing…');
@@ -3121,8 +3121,10 @@ function setSyncBar(state,msg){
   el.style.display='flex';
   const dot=el.querySelector('.sync-dot');
   const lbl=el.querySelector('.sync-lbl');
-  if(dot)dot.style.background=state==='live'?'#4cc834':state==='sync'?'#f5a623':'#f87171';
-  if(lbl){lbl.textContent=msg;lbl.style.color=state==='live'?'#2e5040':'#4a6a5a';}
+  const colors={live:'#4cc834',sync:'#f5a623',err:'#f87171'};
+  const textColors={live:'#4cc834',sync:'#f5a623',err:'#f87171'};
+  if(dot)dot.style.background=colors[state]||'#f5a623';
+  if(lbl){lbl.textContent=msg;lbl.style.color=textColors[state]||'#8ab4c4';}
 }
 
 // ===== INIT =====
