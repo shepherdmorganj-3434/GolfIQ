@@ -198,7 +198,7 @@ input,button{font-family:'Barlow',sans-serif;}
 .p-chip.on .p-chip-av{border-color:#4cc834;}
 .p-chip-name{font-size:11px;font-weight:600;color:#6b8a7a;}
 .p-chip.on .p-chip-name{color:#4cc834;}
-.stat-card{background:#111f2c;border:1px solid #2a5a38;border-radius:14px;padding:12px 14px;}
+.stat-card{background:#111f2c;border:1px solid #2a5a38;border-radius:14px;padding:12px 14px;text-align:center;}
 .stat-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#ffffff;margin-bottom:6px;}
 .stat-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1;}
 .stat-sub{font-size:11px;color:#6b8a7a;margin-top:3px;}
@@ -365,7 +365,7 @@ input,button{font-family:'Barlow',sans-serif;}
         <div class="pd-icon" style="background:#1a2e3d;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z" stroke="#60a5fa" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div><div class="pd-label">Edit profile</div><div class="pd-item-sub">Name, handicap, photo</div></div>
       </div>
-      <div class="pd-item" onclick="goTo('s-my-stats')">
+      <div class="pd-item" onclick="navTo('stats');closeDD()">
         <div class="pd-icon" style="background:#182e1c;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12V8M7 12V5M11 12V3M15 12V7" stroke="#4cc834" stroke-width="1.4" stroke-linecap="round"/></svg></div>
         <div><div class="pd-label">My stats</div><div class="pd-item-sub">Your personal record</div></div>
       </div>
@@ -702,38 +702,14 @@ input,button{font-family:'Barlow',sans-serif;}
       </div>
       <div><div class="field-label">Home course</div><input class="field-input" type="text" id="ep-course"></div>
     </div></div>
-    <!-- MANUAL HANDICAP OVERRIDE -->
-    <div style="padding:0 16px;margin-bottom:4px;">
-      <div style="font-size:10px;color:#6b8a7a;margin-bottom:6px;">Or enter manually if GHIN sync isn't working:</div>
+    <!-- HANDICAP UPDATE -->
+    <div style="padding:0 16px;margin-bottom:20px;">
+      <div class="field-label" style="margin-bottom:8px;">Update Handicap</div>
       <div style="display:flex;gap:8px;align-items:center;">
         <input class="field-input" type="number" id="ep-hcp-manual" min="0" max="54" step="0.1" placeholder="e.g. 8.4" style="flex:1;">
-        <button onclick="setManualHcp()" style="background:#1a3a20;border:1.5px solid #2a5a38;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;color:#4cc834;cursor:pointer;white-space:nowrap;">Set HCP</button>
+        <button onclick="setManualHcp()" style="background:#1a3a20;border:1.5px solid #2a5a38;border-radius:10px;padding:12px 16px;font-size:13px;font-weight:700;color:#4cc834;cursor:pointer;white-space:nowrap;transition:border-color .15s;" onmouseover="this.style.borderColor='#4cc834'" onmouseout="this.style.borderColor='#2a5a38'">Set HCP</button>
       </div>
-    </div>
-    <!-- GHIN SECTION -->
-    <div style="padding:0 16px;margin-bottom:8px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div>
-          <div class="field-label" style="margin-bottom:2px;">GHIN Sync</div>
-          <div style="font-size:11px;color:#6b8a7a;">Pull official handicap from USGA GHIN</div>
-        </div>
-        <div id="ghin-status-dot" style="width:8px;height:8px;border-radius:50%;background:#2a5a38;flex-shrink:0;"></div>
-      </div>
-      <div style="margin-bottom:10px;"><div class="field-label">GHIN Number</div><input class="field-input" type="text" id="ep-ghin-number" placeholder="e.g. 1234567" inputmode="numeric"></div>
-      <div style="margin-bottom:12px;">
-        <div class="field-label">GHIN Password</div>
-        <div style="position:relative;">
-          <input class="field-input" type="password" id="ep-ghin-pw" placeholder="Your GHIN.com password" style="padding-right:44px;">
-          <button onclick="lTogglePW('ep-ghin-pw',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6b8a7a;cursor:pointer;padding:0;display:flex;align-items:center;">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M1 9s3-5.5 8-5.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg>
-          </button>
-        </div>
-      </div>
-      <button onclick="syncGHIN()" id="ghin-sync-btn" style="width:100%;background:#0a1e10;border:1.5px solid #2a5a38;border-radius:12px;padding:12px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#4cc834;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;" onmouseover="this.style.borderColor='#4cc834'" onmouseout="this.style.borderColor='#2a5a38'">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M14 8A6 6 0 012.1 5M2 8A6 6 0 0113.9 11M14 5l.1 3-3-.1M2 11l-.1-3 3 .1" stroke="#4cc834" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Sync from GHIN
-      </button>
-      <div id="ghin-result" style="margin-top:10px;font-size:12px;color:#6b8a7a;text-align:center;min-height:16px;"></div>
+      <div id="hcp-updated-date" style="margin-top:6px;font-size:11px;color:#6b8a7a;"></div>
     </div>
   </div>
   <div class="sticky-bar">
@@ -758,18 +734,7 @@ input,button{font-family:'Barlow',sans-serif;}
 <!-- MY STATS -->
 <div class="screen" id="s-my-stats">
   <div class="sub-hdr"><div class="back-btn" onclick="goTo('s-home')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="#4a7a8a" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="sub-title">My Stats</div></div>
-  <div style="flex:1;overflow-y:auto;padding-bottom:20px;">
-    <div style="display:flex;align-items:center;gap:12px;padding:4px 16px 18px;"><div style="width:52px;height:52px;border-radius:50%;background:#1e3a28;border:2px solid #4cc834;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#4cc834;">JD</div><div><div style="font-size:17px;font-weight:700;color:#fff;">JD Shepherd</div><div style="font-size:12px;color:#6b8a7a;margin-top:2px;">HCP 8 · Pebble Beach</div></div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px;margin-bottom:14px;">
-      <div class="stat-card"><div class="stat-lbl">Rounds</div><div class="stat-val">14</div><div class="stat-sub">This year</div></div>
-      <div class="stat-card"><div class="stat-lbl">Win rate</div><div class="stat-val" style="color:#4cc834;">64%</div><div class="stat-sub">9W · 4L · 1T</div></div>
-      <div class="stat-card"><div class="stat-lbl">Avg score</div><div class="stat-val" style="color:#f97316;">+4.2</div><div class="stat-sub">Stroke play avg</div></div>
-      <div class="stat-card"><div class="stat-lbl">Best round</div><div class="stat-val" style="color:#4cc834;">+1</div><div class="stat-sub">TPC Sawgrass</div></div>
-    </div>
-    <div style="padding:0 16px;margin-bottom:16px;"><div class="stat-card"><div class="stat-lbl" style="margin-bottom:8px;">Win rate breakdown</div><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:#4cc834;">64%</span><span style="font-size:13px;color:#6b8a7a;">9 wins from 14 rounds</span></div><div class="win-bar-track"><div class="win-bar-fill" style="width:64%;"></div></div></div></div>
-    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#9ab4a4;padding:0 16px;margin-bottom:10px;">Record by format</div>
-    <div style="padding:0 16px;" id="my-stats-formats"></div>
-  </div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:20px;" id="my-stats-body"></div>
 </div>
 
 <!-- LIVE SCORECARD VIEW (read-only) -->
@@ -891,9 +856,13 @@ input,button{font-family:'Barlow',sans-serif;}
 <script>
 // ===== USERS =====
 const USERS=[
-  {email:'shepherd.morganj@gmail.com', password:'holeiq2026', first:'Morgan', last:'Shepherd', init:'MS', hcp:8,  course:'Pebble Beach', av:{bg:'#1a3822',c:'#4cc834'}},
-  {email:'bronsonshepherd89@gmail.com', password:'holeiq2026', first:'Bronson', last:'Shepherd', init:'BS', hcp:12, course:'TPC Sawgrass',  av:{bg:'#2a1a0c',c:'#f97316'}},
-  {email:'ekmassee@cord.edu',           password:'holeiq2026', first:'Eddie',   last:'Massee',   init:'EM', hcp:6,  course:'Bethpage Black', av:{bg:'#1a1535',c:'#a78bfa'}},
+  {email:'shepherd.morganj@gmail.com', password:'holeiq2026', first:'Morgan', last:'Shepherd', init:'MS', hcp:8,  course:"Madden's West", av:{bg:'#1a3822',c:'#4cc834'}},
+  {email:'bronsonshepherd89@gmail.com', password:'holeiq2026', first:'Bronson', last:'Shepherd', init:'BS', hcp:12, course:"Madden's West",  av:{bg:'#2a1a0c',c:'#f97316'}},
+  {email:'ekmassee@cord.edu',           password:'holeiq2026', first:'Eddie',   last:'Massee',   init:'EM', hcp:6,  course:"Madden's West", av:{bg:'#1a1535',c:'#a78bfa'}},
+  {email:'scottkimman@yahoo.com',       password:'holeiq2026', first:'Scott',   last:'Kimman',   init:'SK', hcp:10, course:"Madden's West", av:{bg:'#0c2025',c:'#2dd4bf'}},
+  {email:'drew.boland@hotmail.com',     password:'holeiq2026', first:'Drew',    last:'Boland',   init:'DB', hcp:0,  course:"Madden's West", av:{bg:'#1a0c2a',c:'#e879f9'}},
+  {email:'ottie11@hotmail.com',         password:'holeiq2026', first:'Aaron',   last:'Otteson',  init:'AO', hcp:0,  course:"Madden's West", av:{bg:'#1a1a0c',c:'#facc15'}},
+  {email:'jenkins_aaron_m@yahoo.com',   password:'holeiq2026', first:'Aaron',   last:'Jenkins',  init:'AJ', hcp:0,  course:"Madden's West", av:{bg:'#1e0a0a',c:'#fb923c'}},
 ];
 let currentUser = null;
 
@@ -972,11 +941,13 @@ const PAST_ROUNDS=[
   {id:'demo7',date:new Date('2026-02-14'),course:'Appleton Golf Course',format:'Wolf',score:'+7',rel:'2nd',relC:'#f97316',winner:'Dan Won',players:'vs Dan · Chris · Mike'},
 ];
 const STAT_PLAYERS=[
-  {id:1,name:'JD',init:'JD',av:{bg:'#1a3822',c:'#4cc834'},hcp:8,rounds:14,wins:9,losses:4,ties:1,avg:'+4.2',best:'+1',formats:[{name:'Stroke Play',color:'#4cc834',bg:'#182e1c',wl:'3W-2L',avg:'+4.2'},{name:'Stableford',color:'#84cc16',bg:'#1a2a0a',wl:'2W-1L',avg:'35 pts'},{name:'Match Play',color:'#f87171',bg:'#2a1010',wl:'3W-1L',avg:'3&1'},{name:'Wolf',color:'#a78bfa',bg:'#1a1330',wl:'1W-1L',avg:'+2.5'},{name:'Nassau',color:'#60a5fa',bg:'#0e1e30',wl:'2W-0L',avg:'2.5 bets'}]},
-  {id:2,name:'Mike',init:'MK',av:{bg:'#2a1a0c',c:'#f97316'},hcp:12,rounds:11,wins:4,losses:6,ties:1,avg:'+6.8',best:'+3',formats:[{name:'Stroke Play',color:'#4cc834',bg:'#182e1c',wl:'2W-2L',avg:'+6.8'},{name:'Match Play',color:'#f87171',bg:'#2a1010',wl:'1W-2L',avg:'1up'},{name:'Wolf',color:'#a78bfa',bg:'#1a1330',wl:'1W-1L',avg:'+1.5'}]},
-  {id:3,name:'Chris',init:'CR',av:{bg:'#1a1535',c:'#a78bfa'},hcp:15,rounds:8,wins:2,losses:5,ties:1,avg:'+9.1',best:'+5',formats:[{name:'Stroke Play',color:'#4cc834',bg:'#182e1c',wl:'1W-2L',avg:'+9.1'},{name:'Stableford',color:'#84cc16',bg:'#1a2a0a',wl:'1W-1L',avg:'31 pts'}]},
-  {id:4,name:'Dan',init:'DN',av:{bg:'#0e1e30',c:'#60a5fa'},hcp:5,rounds:10,wins:6,losses:3,ties:1,avg:'+2.8',best:'E',formats:[{name:'Stroke Play',color:'#4cc834',bg:'#182e1c',wl:'3W-1L',avg:'+2.8'},{name:'Stableford',color:'#84cc16',bg:'#1a2a0a',wl:'1W-1L',avg:'34 pts'},{name:'Nassau',color:'#60a5fa',bg:'#0e1e30',wl:'2W-0L',avg:'2.5 bets'}]},
-  {id:5,name:'Alex',init:'AR',av:{bg:'#182e1c',c:'#4cc834'},hcp:3,rounds:6,wins:4,losses:2,ties:0,avg:'+1.5',best:'-1',formats:[{name:'Match Play',color:'#f87171',bg:'#2a1010',wl:'2W-1L',avg:'2&1'},{name:'Stroke Play',color:'#4cc834',bg:'#182e1c',wl:'2W-0L',avg:'+1.5'}]},
+  {id:1,name:'Morgan Shepherd',init:'MS',av:{bg:'#1a3822',c:'#4cc834'},hcp:8,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
+  {id:2,name:'Bronson Shepherd',init:'BS',av:{bg:'#2a1a0c',c:'#f97316'},hcp:12,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
+  {id:3,name:'Eddie Massee',init:'EM',av:{bg:'#1a1535',c:'#a78bfa'},hcp:6,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
+  {id:4,name:'Scott Kimman',init:'SK',av:{bg:'#0c2025',c:'#2dd4bf'},hcp:10,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
+  {id:5,name:'Drew Boland',init:'DB',av:{bg:'#1a0c2a',c:'#e879f9'},hcp:0,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
+  {id:6,name:'Aaron Otteson',init:'AO',av:{bg:'#1a1a0c',c:'#facc15'},hcp:0,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
+  {id:7,name:'Aaron Jenkins',init:'AJ',av:{bg:'#1e0a0a',c:'#fb923c'},hcp:0,rounds:0,wins:0,losses:0,ties:0,avg:'—',best:'—',formats:[]},
 ];
 
 // Roster is derived from USERS — only players with a login account
@@ -1042,21 +1013,15 @@ function enterApp(){
   const ee=document.getElementById('ep-email');if(ee)ee.value=u.email;
   const eh=document.getElementById('ep-hcp');if(eh)eh.value=u.hcp;
   const ec=document.getElementById('ep-course');if(ec)ec.value=u.course;
-  // Load saved GHIN credentials
-  const ghinData=JSON.parse(localStorage.getItem('ghin_'+u.email)||'{}');
-  const egn=document.getElementById('ep-ghin-number');if(egn)egn.value=ghinData.ghinNumber||'';
-  const egp=document.getElementById('ep-ghin-pw');if(egp)egp.value=ghinData.ghinPw||'';
-  if(ghinData.handicap!=null){
-    updateHcpDisplay(ghinData.handicap,'From GHIN\n'+(ghinData.lastSync||''));
-    const dot=document.getElementById('ghin-status-dot');
-    if(dot)dot.style.background='#4cc834';
-    const res=document.getElementById('ghin-result');
-    if(res)res.textContent='Last synced: HCP '+ghinData.handicap+' · '+ghinData.lastSync;
+  // Load saved handicap data
+  const hcpData=JSON.parse(localStorage.getItem('hcp_'+u.email)||'{}');
+  if(hcpData.handicap!=null){
+    updateHcpDisplay(hcpData.handicap, hcpData.updatedDate||'');
   } else {
     const hcpDisplay=document.getElementById('ep-hcp-display');
     const hcpSource=document.getElementById('ep-hcp-source');
     if(hcpDisplay){hcpDisplay.textContent='N/A';hcpDisplay.style.color='#6b8a7a';}
-    if(hcpSource)hcpSource.innerHTML='Sync GHIN<br>below';
+    if(hcpSource)hcpSource.innerHTML='Set below';
   }
   // render avatar in edit profile
   setTimeout(renderBigAv,50);
@@ -1444,7 +1409,7 @@ function renderCourseHistory(playerName, backScreen){
 
 // ===== ROSTER =====
 // Map each USERS index to a STAT_PLAYERS id (1-based)
-const USER_STAT_MAP=[1,2,3]; // USERS[0]→statId 1, USERS[1]→statId 2, USERS[2]→statId 3
+const USER_STAT_MAP=[1,2,3,4,5,6,7];
 
 function buildRoster(){
   const el=document.getElementById('roster-screen-list');
@@ -3506,119 +3471,56 @@ function openStatDetail(type){
 }
 function closeStatDetail(){document.getElementById('modal-stat-detail').classList.remove('open');}
 function buildMyStats(){
-  document.getElementById('my-stats-formats').innerHTML=STAT_PLAYERS[0].formats.map(f=>`<div class="fmt-rec" style="margin-bottom:8px;"><div style="width:34px;height:34px;border-radius:10px;background:${f.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="${f.color}" stroke-width="1.4"/></svg></div><div style="flex:1;font-size:14px;font-weight:700;color:#ffffff;">${f.name}</div><div style="text-align:right;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#fff;">${f.wl}</div><div style="font-size:11px;color:#6b8a7a;">${f.avg}</div></div></div>`).join('');
+  if(!currentUser)return;
+  // Set statP to the logged-in user
+  const uIdx=USERS.findIndex(u=>u.email===currentUser.email);
+  const statId=USER_STAT_MAP[uIdx>=0?uIdx:0];
+  statP=STAT_PLAYERS.find(p=>p.id===statId)||STAT_PLAYERS[0];
+  // Render the same full stats body into s-my-stats
+  const u=currentUser;
+  const body=document.getElementById('my-stats-body');
+  if(!body)return;
+  // Reuse renderStatBody logic but render into my-stats-body
+  const savedStatsBody=document.getElementById('stats-body');
+  // Temporarily swap target, render, swap back
+  const temp=document.createElement('div');
+  temp.id='stats-body';
+  if(savedStatsBody)savedStatsBody.id='stats-body-bk';
+  body.appendChild(temp);
+  renderStatBody();
+  body.innerHTML=temp.innerHTML;
+  temp.remove();
+  if(savedStatsBody)savedStatsBody.id='stats-body';
 }
 
-// ===== GHIN SYNC =====
-async function syncGHIN(){
-  const ghinNumber=document.getElementById('ep-ghin-number')?.value.trim();
-  const ghinPw=document.getElementById('ep-ghin-pw')?.value;
-  const resultEl=document.getElementById('ghin-result');
-  const dot=document.getElementById('ghin-status-dot');
-  const btn=document.getElementById('ghin-sync-btn');
-
-  if(!ghinNumber||!ghinPw){
-    if(resultEl)resultEl.innerHTML='<span style="color:#f87171;">Please enter your GHIN number and password.</span>';
-    return;
-  }
-
-  if(btn){btn.style.opacity='0.6';btn.disabled=true;}
-  if(resultEl)resultEl.innerHTML='<span style="color:#f5a623;">Connecting to GHIN…</span>';
-  if(dot)dot.style.background='#f5a623';
-
-  try{
-    // GHIN login uses ghin_number + password
-    const loginRes=await fetch('https://api.ghin.com/api/v1/golfer_login.json',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({user:{ghin:ghinNumber,password:ghinPw,remember_me:true}})
-    });
-
-    if(!loginRes.ok){
-      // Try alternate format
-      const loginRes2=await fetch('https://api.ghin.com/api/v1/golfer_login.json',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({golfer:{ghin_number:ghinNumber,password:ghinPw}})
-      });
-      if(!loginRes2.ok) throw new Error('Login failed — check your GHIN number and password.');
-      var loginData2=await loginRes2.json();
-      var token=loginData2?.golfer_token||loginData2?.token;
-      var golfer=loginData2?.golfer||loginData2;
-    } else {
-      var loginData=await loginRes.json();
-      var token=loginData?.golfer_token||loginData?.token;
-      var golfer=loginData?.golfer||loginData;
-    }
-
-    if(!token&&!golfer?.handicap_index) throw new Error('GHIN authentication failed — check credentials.');
-
-    // Get handicap from login response or fetch separately
-    let handicap=golfer?.handicap_index??golfer?.HandicapIndex??golfer?.Handicap;
-    if(handicap==null&&token){
-      const hcpRes=await fetch(`https://api.ghin.com/api/v1/golfers/${ghinNumber}.json`,{
-        headers:{'Authorization':'Bearer '+token,'Accept':'application/json'}
-      });
-      if(hcpRes.ok){
-        const hcpData=await hcpRes.json();
-        handicap=hcpData?.golfer?.handicap_index??hcpData?.HandicapIndex??handicap;
-      }
-    }
-
-    if(handicap==null) throw new Error('Could not retrieve handicap index.');
-
-    const hcpRounded=Math.round(parseFloat(handicap)*10)/10;
-    const now=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-
-    const saveData={ghinNumber,ghinPw,handicap:hcpRounded,lastSync:now};
-    if(currentUser)localStorage.setItem('ghin_'+currentUser.email,JSON.stringify(saveData));
-
-    updateHcpDisplay(hcpRounded,'From GHIN\n'+now);
-    if(currentUser){
-      currentUser.hcp=hcpRounded;
-      const uIdx=USERS.findIndex(u=>u.email===currentUser.email);
-      if(uIdx>=0)USERS[uIdx].hcp=hcpRounded;
-      document.querySelector('.pd-sub').textContent='HCP '+hcpRounded+' · '+currentUser.course;
-    }
-    if(dot)dot.style.background='#4cc834';
-    if(resultEl)resultEl.innerHTML=`<span style="color:#4cc834;">✓ Synced! HCP <strong>${hcpRounded}</strong> · ${now}</span>`;
-    showToast('GHIN synced! HCP '+hcpRounded+' ⛳');
-
-  }catch(e){
-    if(dot)dot.style.background='#f87171';
-    const msg=e.message||'Connection failed';
-    const isCors=msg.toLowerCase().includes('fetch')||msg.toLowerCase().includes('network')||msg.toLowerCase().includes('cors');
-    if(resultEl)resultEl.innerHTML=`<span style="color:#f87171;">✗ ${isCors?'GHIN blocked browser access — use manual entry below':msg}</span>`;
-  }finally{
-    if(btn){btn.style.opacity='1';btn.disabled=false;}
-  }
-}
-
+// ===== HANDICAP =====
 function setManualHcp(){
   const val=document.getElementById('ep-hcp-manual')?.value;
   if(!val||isNaN(val)){showToast('Enter a valid handicap');return;}
   const hcp=Math.round(parseFloat(val)*10)/10;
-  updateHcpDisplay(hcp,'Manual entry');
+  const now=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  updateHcpDisplay(hcp, now);
   if(currentUser){
     currentUser.hcp=hcp;
     const uIdx=USERS.findIndex(u=>u.email===currentUser.email);
     if(uIdx>=0)USERS[uIdx].hcp=hcp;
     document.querySelector('.pd-sub').textContent='HCP '+hcp+' · '+currentUser.course;
-    // Save to local storage
-    const saved=JSON.parse(localStorage.getItem('ghin_'+currentUser.email)||'{}');
-    saved.handicap=hcp;saved.lastSync='Manual';
-    localStorage.setItem('ghin_'+currentUser.email,JSON.stringify(saved));
+    localStorage.setItem('hcp_'+currentUser.email,JSON.stringify({handicap:hcp,updatedDate:now}));
   }
-  showToast('Handicap set to '+hcp);
+  const inp=document.getElementById('ep-hcp-manual');
+  if(inp)inp.value='';
+  showToast('Handicap updated to '+hcp+' ⛳');
 }
 
-function updateHcpDisplay(hcp, sourceText){
+function updateHcpDisplay(hcp, updatedDate){
   const hcpDisplay=document.getElementById('ep-hcp-display');
   const hcpSource=document.getElementById('ep-hcp-source');
   const hcpHidden=document.getElementById('ep-hcp');
+  const dateEl=document.getElementById('hcp-updated-date');
   if(hcpDisplay){hcpDisplay.textContent=hcp;hcpDisplay.style.color='#4cc834';}
-  if(hcpSource)hcpSource.innerHTML=sourceText.replace('\n','<br>');
+  if(hcpSource)hcpSource.innerHTML='Updated';
   if(hcpHidden)hcpHidden.value=hcp;
+  if(dateEl)dateEl.textContent=updatedDate?'Last updated: '+updatedDate:'';
 }
 
 // ===== SUPABASE SYNC =====
