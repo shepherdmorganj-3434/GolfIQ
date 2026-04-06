@@ -376,9 +376,9 @@ input,button{font-family:'Barlow',sans-serif;}
     </div>
   </div>
   <div class="hero">
-    <div id="db-sync-bar" style="display:none;align-items:center;gap:5px;margin-bottom:10px;padding:4px 10px;background:#0a1820;border-radius:8px;width:fit-content;">
-      <div class="sync-dot" style="width:6px;height:6px;border-radius:50%;background:#4cc834;"></div>
-      <span class="sync-lbl" style="font-size:10px;color:#2e5040;"></span>
+    <div id="db-sync-bar" style="display:flex;align-items:center;gap:5px;margin-bottom:10px;padding:4px 10px;background:#0a1820;border-radius:8px;width:fit-content;">
+      <div class="sync-dot" style="width:6px;height:6px;border-radius:50%;background:#f5a623;"></div>
+      <span class="sync-lbl" style="font-size:10px;color:#4a6a5a;">Connecting…</span>
     </div>
     <div class="hero-label">Ready to play?</div>
     <div class="hero-title">Start a New Round</div>
@@ -2960,8 +2960,8 @@ async function dbCheckReady(){
 // ── Load history and resume active round for logged-in user ─────────────────
 async function dbInit(){
   if(!currentUser)return;
+  setSyncBar('sync','Connecting…');
   if(!await dbCheckReady()){
-    // DB not set up yet — app works fine offline, just hide the bar
     setSyncBar('off','');
     return;
   }
@@ -3122,7 +3122,7 @@ function setSyncBar(state,msg){
   const dot=el.querySelector('.sync-dot');
   const lbl=el.querySelector('.sync-lbl');
   if(dot)dot.style.background=state==='live'?'#4cc834':state==='sync'?'#f5a623':'#f87171';
-  if(lbl)lbl.textContent=msg;
+  if(lbl){lbl.textContent=msg;lbl.style.color=state==='live'?'#2e5040':'#4a6a5a';}
 }
 
 // ===== INIT =====
